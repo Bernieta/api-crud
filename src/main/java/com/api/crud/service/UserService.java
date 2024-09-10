@@ -57,7 +57,7 @@ public class UserService implements IUserService {
      */
     @Override
     public Optional<UserDTO> update(UserDTO userDTO) {
-        Optional<UserDTO> userDTOOptional = userRepository.findById(userDTO.getId());
+        Optional<UserDTO> userDTOOptional = userRepository.findById(userDTO.getUserId());
         if (userDTOOptional.isEmpty()) throw new NotFoundException("El usuario no existe");
         return Optional.of(userRepository.save(userDTO));
     }

@@ -4,8 +4,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Manejador global de excepciones
@@ -24,7 +28,7 @@ public class GlobalExceptionsHandlers {
      * @param badRequestException Tipo de excepción
      * @return Respuesta con los detalles de la excepción
      */
-    @ExceptionHandler(BadRequestException.class)
+    @ExceptionHandler({BadRequestException.class})
     public ResponseEntity<CustomResponseHandler> badRequestExceptionHandler(BadRequestException badRequestException) {
         LOGGER.error("badRequestExceptionHandler - message {}", badRequestException.getMessage());
         CustomResponseHandler customResponseHandler = new CustomResponseHandler(
@@ -101,6 +105,22 @@ public class GlobalExceptionsHandlers {
                 internalServerErrorException.getMessage()
         );
         return new ResponseEntity<>(customResponseHandler, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+
+    /**
+     * Maneja las respuestas de la excepciones de la validaciones
+     * @param exception Tipo de excepción
+     * @return Respuesta con los detalles de la excepción
+     */
+    @ExceptionHandler({MethodArgumentNotValidException.class})
+    public ResponseEntity<Map<String, String>> invalidArgumentExceptionHandler(MethodArgumentNotValidException exception) {
+        LOGGER.error("invalidArgumentExceptionHandler - message {}", exception.getMessage());
+        Map<String, String> errors = new HashMap<>();
+        exception.getBindingResult().getFieldErrors().forEach(error -> {
+            errors.put(error.getField(), error.getDefaultMessage());
+        });
+        return new ResponseEntity<>(errors, HttpStatus.BAD_REQUEST);
     }
 
 

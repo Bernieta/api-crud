@@ -2,6 +2,7 @@ package com.api.crud.controller;
 
 import com.api.crud.dto.UserDTO;
 import com.api.crud.service.IUserService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -27,7 +28,7 @@ public class UserController {
     }
 
     @PostMapping
-    public ResponseEntity<UserDTO> save(@RequestBody UserDTO userDTO) {
+    public ResponseEntity<UserDTO> save(@RequestBody @Valid UserDTO userDTO) {
         return ResponseEntity
                 .status(HttpStatus.CREATED)
                 .body(userService.save(userDTO));

@@ -9,9 +9,11 @@ import java.util.List;
 @Mapper(componentModel = "spring")
 public interface IUserMapper {
 
-    UserEntity toUserEntity(UserDTO userDTO);
-
     UserDTO toUserDTO(UserEntity userEntity);
+
+//    @Mapping(target = "profile", ignore = true)
+//    @Mapping(target = "tasks", ignore = true)
+    UserEntity toUserEntity(UserDTO userDTO);
 
     List<UserDTO> toUserDTOList(List<UserEntity> userEntityList);
 }
