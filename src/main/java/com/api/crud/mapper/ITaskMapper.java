@@ -12,7 +12,7 @@ public interface ITaskMapper {
 
     TaskDTO toTaskDTO(TaskEntity taskEntity);
 
-    @Mapping(target = "user", ignore = true)
+    //@Mapping(target = "user", ignore = true)
     @Mapping(target = "project", ignore = true)
     TaskEntity toTaskEntity(TaskDTO taskDTO);
 
